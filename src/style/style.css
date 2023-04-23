@@ -1,0 +1,60 @@
+.form {
+  width: 100%;
+
+  background-color: rgba(0, 0, 0, 0.13);
+}
+
+::placeholder {
+  color: white;
+}
+
+input {
+  width: 90%;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.spinner {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon {
+  font-size: 70px;
+  font-weight: bold;
+}
+
+.iconsite {
+  width: 100%;
+}
+
+.card {
+  width: 300px;
+  height: 350px;
+  background-color: rgba(0, 0, 0, 0.13);
+}
+
+.date {
+  font-size: 12px;
+}
+
+.temp {
+  font-size: 70px;
+}
+
+.cardBody {
+  width: 100%;
+}
+
+.body-details {
+  font-size: 13px;
+}
