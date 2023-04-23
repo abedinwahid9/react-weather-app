@@ -50,8 +50,17 @@ export default function Weather() {
     if (input.value === "") {
       alert("enter city or country name");
     }
+
     e.preventDefault();
   };
+
+  // user input wrong country name auto load and default country in 3sec
+
+  if (error) {
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  }
 
   // weather set icon
 
@@ -137,7 +146,7 @@ export default function Weather() {
               </div>
             </div>
           ) : error ? (
-            <div>there is an error</div>
+            <div>wrong country</div>
           ) : (
             <div>
               <div className=" d-flex align-items-center justify-content-between iconsite">
