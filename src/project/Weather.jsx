@@ -30,20 +30,18 @@ import { ImSpinner2 } from "react-icons/im";
 const Apikey = "860599d183ec7058e96fcb08ff047e4d";
 
 export default function Weather() {
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState("");
   const [inputValue, setInputValue] = useState("");
   const { loading, error, data } = useFetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${Apikey}&units=metric`
   );
 
-  if (!location && loading && !data && error) {
-    const timeoutId = setTimeout(() => {
-      window.location.reload();
-    }, 3000);
-    return () => clearTimeout(timeoutId);
-  }
+  // if (error && !data) {
+  //   setInputValue("");
+  // }
+  // console.log(data);
 
-  console.log(location);
+  // console.log(location);
   useEffect(() => {
     // Get current location
     navigator.geolocation.getCurrentPosition((position) => {
@@ -82,14 +80,6 @@ export default function Weather() {
 
     e.preventDefault();
   };
-
-  // user input wrong country name auto load and default country in 3sec
-
-  // if (!location && !data && error) {
-  //   setTimeout(() => {
-  //     window.location.reload();
-  //   }, 3000);
-  // }
 
   // weather set icon
 
@@ -200,7 +190,7 @@ export default function Weather() {
               </div>
 
               <div className="pb-5 pt-2 ">
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center justify-content-center">
                   {/* temp */}
                   <div className="temp">{parseInt(data?.main.temp)}</div>
                   <div className="h2">
