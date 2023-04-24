@@ -12,7 +12,7 @@ export function useFetch(url) {
         setError(null);
         const response = await fetch(url);
 
-        console.log(response.url);
+        // console.log(response.url);
 
         if (!response.ok) {
           if (response.status === 401) {
