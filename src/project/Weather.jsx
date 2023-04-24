@@ -1,5 +1,5 @@
 import "../style/style.css";
-import { lazy, useState } from "react";
+import { lazy, useState, useEffect } from "react";
 import { useFetch } from "../Hooks/useFetch";
 // import react icons
 
@@ -20,6 +20,7 @@ import {
   BsWind,
   BsSearch,
   BsCloudDrizzleFill,
+  BsSnow2,
 } from "react-icons/bs";
 
 import { IoIosSunny } from "react-icons/io";
@@ -29,11 +30,39 @@ import { ImSpinner2 } from "react-icons/im";
 const Apikey = "860599d183ec7058e96fcb08ff047e4d";
 
 export default function Weather() {
-  const [location, setLocation] = useState("dhaka");
+  const [location, setLocation] = useState();
   const [inputValue, setInputValue] = useState("");
   const { loading, error, data } = useFetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${Apikey}&units=metric`
   );
+
+  if (!location && loading && !data && error) {
+    const timeoutId = setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+    return () => clearTimeout(timeoutId);
+  }
+
+  console.log(location);
+  useEffect(() => {
+    // Get current location
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      const goApi = "53cac41e634f407e9d0cd410c67c2860";
+
+      // Reverse geocode current location
+      fetch(
+        `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${goApi}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setLocation(data?.results[0].components.city);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  }, []);
 
   // input value
   const input = document.querySelector("input");
@@ -56,11 +85,11 @@ export default function Weather() {
 
   // user input wrong country name auto load and default country in 3sec
 
-  if (error) {
-    setTimeout(() => {
-      window.location.reload();
-    }, 3000);
-  }
+  // if (!location && !data && error) {
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 3000);
+  // }
 
   // weather set icon
 
@@ -84,6 +113,9 @@ export default function Weather() {
       break;
     case "Snow":
       icon = <WiDaySnow />;
+      break;
+    case "Mist":
+      icon = <BsSnow2 />;
       break;
     case "Thunderstorm":
       icon = <WiDayThunderstorm />;
@@ -140,6 +172,8 @@ export default function Weather() {
 
         <div className="card text-white py-3 px-4 d-flex align-items-center">
           {loading ? (
+            ""
+          ) : !location ? (
             <div>
               <div>
                 <ImSpinner2 className="spinner" />
@@ -148,7 +182,7 @@ export default function Weather() {
           ) : error ? (
             <div>wrong country</div>
           ) : (
-            <div>
+            <div className="cardB">
               <div className=" d-flex align-items-center justify-content-between iconsite">
                 {/* icon */}
                 <div className="icon text-white d-flex ">{icon}</div>
